@@ -1,0 +1,17 @@
+{
+  "name": "logparser",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chromelogger": "^1.1.1",
+    "express": "^4.15.3",
+    "line-by-line": "^0.1.5",
+    "opn": "^5.1.0"
+  }
+}
