@@ -35,7 +35,7 @@ function readFile(path) {
                 }
                 if (line.search(/Response:/) > 0) {
                     const repgenResponse = line.replace(/^.*Response:\s(.*)$/, '$1')
-                    console.log(`\tResponse of ${repgenName}\r\n`.blue.bold);
+                    console.log(`\r\n\tResponse of ${repgenName}\r\n`.blue.bold);
                     console.log(`\t${repgenResponse.replace(/\|/g, '\r\n\t').replace(/~JRGLINE=/g, '').replace(/~/g, '\r\n\t')}`.green);
                     console.log('\r\n\t-------------------------------------\r\n'.grey);
                 }
