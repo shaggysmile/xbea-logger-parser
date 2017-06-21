@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const colors = require('colors');
 const LineByLineReader = require('line-by-line');
 const program = require('commander');
