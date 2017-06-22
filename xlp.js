@@ -11,11 +11,30 @@ const path = require('path');
 program
     .version('0.0.1')
     .option('-p, --path [path]', 'Path to xbea log')
+    .option('-f, --filter [path]', 'Filter by Regen')
     .parse(process.argv);
+
 
 
 const DEFAULT_PATH = 'C:/Xbea/Logs/VIP/';
 const PATH = program.path || DEFAULT_PATH;
+const FILTER = program.filter;
+
+
+function outputLog(line, repgenName) {
+    if (line.search(/Request:/) > 0) {
+
+        const repgenResponse = line.replace(/^.*Request:\s(.*)$/, '$1')
+        console.log(`\r\n\tRequest of ${repgenName.replace(/^G/, '')}\r\n`.blue.bold);
+        console.log(`\t${repgenResponse.replace(/~/g, '\r\n\t')}`.cyan);
+    }
+    if (line.search(/Response:/) > 0) {
+        const repgenResponse = line.replace(/^.*Response:\s(.*)$/, '$1')
+        console.log(`\r\n\tResponse of ${repgenName}\r\n`.blue.bold);
+        console.log(`\t${repgenResponse.replace(/\|/g, '\r\n\t').replace(/~JRGLINE=/g, '').replace(/~/g, '\r\n\t')}`.green);
+        console.log('\r\n\t-------------------------------------\r\n'.grey);
+    }
+}
 
 function parseLog(path) {
     const lr = new LineByLineReader(path);
@@ -28,18 +47,14 @@ function parseLog(path) {
             if (line.search(/SymConnectClient/) > 0) {
 
                 const repgenNamePattern = line.match(/[.A-Z]+\.RG/);
-                const repgenName = repgenNamePattern && repgenNamePattern.length ? repgenNamePattern[0] : line;
-
-                if (line.search(/Request:/) > 0) {
-                    const repgenResponse = line.replace(/^.*Request:\s(.*)$/, '$1')
-                    console.log(`\r\n\tRequest of ${repgenName}\r\n`.blue.bold);
-                    console.log(`\t${repgenResponse.replace(/~/g, '\r\n\t')}`.cyan);
-                }
-                if (line.search(/Response:/) > 0) {
-                    const repgenResponse = line.replace(/^.*Response:\s(.*)$/, '$1')
-                    console.log(`\r\n\tResponse of ${repgenName}\r\n`.blue.bold);
-                    console.log(`\t${repgenResponse.replace(/\|/g, '\r\n\t').replace(/~JRGLINE=/g, '').replace(/~/g, '\r\n\t')}`.green);
-                    console.log('\r\n\t-------------------------------------\r\n'.grey);
+                const repgenName = repgenNamePattern && repgenNamePattern.length ? repgenNamePattern[0].replace(/^G/,'') : '';
+                if(repgenName) {
+                    if(FILTER && FILTER === repgenName) {
+                        outputLog(line, repgenName)
+                    }
+                    if(!FILTER) {
+                        outputLog(line, repgenName)
+                    }
                 }
             }
         });
