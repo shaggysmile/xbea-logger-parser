@@ -47,7 +47,7 @@ function parseLog(path) {
             if (line.search(/SymConnectClient/) > 0) {
 
                 const repgenNamePattern = line.match(/[.A-Z]+\.RG/);
-                const repgenName = repgenNamePattern && repgenNamePattern.length ? repgenNamePattern[0].replace(/^G/,'') : '';
+                const repgenName = repgenNamePattern && repgenNamePattern.length ? repgenNamePattern[0].replace(/^G/,'') : line;
                 if(repgenName) {
                     if(FILTER && FILTER === repgenName) {
                         outputLog(line, repgenName)
