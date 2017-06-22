@@ -49,7 +49,7 @@ function parseLog(path) {
                 const repgenNamePattern = line.match(/[.A-Z]+\.RG/);
                 const repgenName = repgenNamePattern && repgenNamePattern.length ? repgenNamePattern[0].replace(/^G/,'') : line;
                 if(repgenName) {
-                    if(FILTER && FILTER === repgenName) {
+                    if(FILTER && FILTER === repgenName || repgenName === line) {
                         outputLog(line, repgenName)
                     }
                     if(!FILTER) {
