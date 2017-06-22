@@ -7,15 +7,17 @@ const chokidar = require('chokidar');
 const fs = require("fs");
 const path = require('path');
 
+
 program
     .version('0.0.1')
-    .option('-p, --path [path]', 'path to xbea log')
+    .option('-p, --path [path]', 'Path to xbea log')
     .parse(process.argv);
 
-const PATH = program.path || 'C:\\Xbea\\Logs\\VIP\\';
 
+const DEFAULT_PATH = 'C:/Xbea/Logs/VIP/';
+const PATH = program.path || DEFAULT_PATH;
 
-function readFile(path) {
+function parseLog(path) {
     const lr = new LineByLineReader(path);
     const lines = [];
     lr.on('line', function (line) {
@@ -62,11 +64,20 @@ if (PATH) {
         }
     }
 
-    chokidar.watch(PATH, {ignored: /(^|[\/\\])\../}).on('all', (event, path) => {
-        const lastFile = getLastModifiedFile(PATH);
-        if(lastFile) {
-            readFile(lastFile);
-        }
+    try {
+        const lastFile = fs.statSync(PATH).isFile() ? PATH : getLastModifiedFile(PATH);
+        chokidar.watch(PATH, {ignored: /(^|[\/\\])\../}).on('all', (event, path) => {
+            if(lastFile) {
+                parseLog(lastFile);
+            }
+        })
+    }
+    catch(err) {
+        console.log(`Path ${PATH} does't exist :(`.cyan);
+    }
 
-    });
+
+
+
+
 }

@@ -1,6 +1,6 @@
 {
   "name": "xbealogparser",
-  "version": "1.0.4",
+  "version": "1.0.7",
   "description": "",
   "main": "xlp.js",
   "scripts": {
@@ -9,6 +9,11 @@
   "bin" : {
     "xlp" : "./xlp.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shaggysmile/xbea-logger-parser.git"
+  },
+  "bugs": "https://github.com/shaggysmile/xbea-logger-parser/issues",
   "author": "",
   "license": "ISC",
   "dependencies": {
